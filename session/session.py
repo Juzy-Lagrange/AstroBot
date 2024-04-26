@@ -8,7 +8,6 @@ def dataMessage(message, lang, f_arcane=False, f_num=False, f_color=False):
         "f_color": f_color
     }
 
-
 class Session():
     def __init__(self):
         self.session_pool = dict()
@@ -82,4 +81,12 @@ class Session():
     
     def getLang(self, id):
         return self.session_pool[id]["lang"]
-        
+    
+    def setLang(self, id, lang):
+        self.session_pool[id]["lang"] = lang
+    
+    def setPostState(self, id, status):
+        self.session_pool[id]["post_status"] = status
+    
+    def getPostState(self, id):
+        return self.session_pool[id]["post_status"]

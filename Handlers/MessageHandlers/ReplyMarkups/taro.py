@@ -1,8 +1,10 @@
 from Bot.bot import *
 from utility import GetLocalizationIfUserSession
+from utility import generate_one_card, generate_three_cards
 from telegram_objects.keyboards import getPredictionsTaroButtons
-from telebot.types import InputMediaPhoto
-from taro_bot import cards
+from Handlers.Choose_currency.choose_currency import choose_currency
+from Bot.products_dict import costs
+
 
 async def taro_predictions(message, bot: AsyncTeleBot):
     user_id = message.chat.id
@@ -16,31 +18,65 @@ async def taro_predictions(message, bot: AsyncTeleBot):
 async def send_one_card_taro_spread(message, bot: AsyncTeleBot):
     user_id = message.chat.id
     lc = GetLocalizationIfUserSession(user_id, message)
+    
+    user = telegram_user.get(telegram_user.chat_id == str(user_id))
 
-    deck = cards.get_deck()
-    cards.shuffle_deck(deck)
-    card = cards.get_card(deck)
-
-    if card[1] == -1:
-        one_card_msg = lc["RFormatedTaroString"].format(card[0]["name"], card[0]["rdesc"])
+    if (user.unlimited_taro):
+        if (user.taro_limit < 30):
+            await generate_one_card(user_id, lc, bot)
+            user.taro_limit += 1
+            user.save()
+        else:
+            await bot.send_message(user_id, lc["Limit30Cards"])
     else:
-        one_card_msg = lc["FormatedTaroString"].format(card[0]["name"], card[0]["desc"])
+        if (user.taro_count > 0):
+            await generate_one_card(user_id, lc, bot)
+            user.taro_count -= 1
+            user.taro_limit += 1
+            user.save()
+            
+        else:
+            await bot.send_message(user_id, lc["NoTaroGenerations"])
 
-    img = open("taro_bot/"+card[0]["image"], 'rb')
-    await bot.send_photo(user_id,img,caption = one_card_msg)
+            await bot.set_state(message.from_user.id, MyStates.choose_currency, message.chat.id)
+            async with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
+                data["product_name"] = "one_taro_gen"
 
+            await choose_currency(message, bot)
+            # invoice_parameters = ProductFabricMethod.getProduct("one_taro_gen", session.getLang(user_id), costs["RUB"]["one_taro_gen"]).getProductParameters()
+            # await bot.send_invoice(user_id, **invoice_parameters)
+            
 
 async def send_three_card_taro_spread(message, bot: AsyncTeleBot):
     user_id = message.chat.id
     lc = GetLocalizationIfUserSession(user_id, message)
 
-    deck = cards.get_deck()
-    cards.shuffle_deck(deck)
-    tcards = [cards.get_card(deck) for _ in range(3)]
+    user = telegram_user.get(telegram_user.chat_id == str(user_id))
 
-    genMsg = lambda card: lc["RFormatedTaroString"].format(card[0]["name"], card[0]["rdesc"]) if card[1] == -1 else lc["FormatedTaroString"].format(card[0]["name"], card[0]["desc"])
-    imgs = [open("taro_bot/"+card[0]["image"],'rb') for card in tcards]
-    texts = [genMsg(card) for card in tcards]  
+    if (user.unlimited_taro):
+        if (user.taro_limit < 30):
+            await generate_three_cards(user_id, lc, bot)
+            user.taro_limit += 3
+            user.save()
+        else:
+            await bot.send_message(user_id, lc["Limit30Cards"])
+    else:
+        if (user.taro_count > 2):
+            await generate_three_cards(user_id, lc, bot)
+            user.taro_count -= 3
+            user.taro_limit += 3
+            user.save()
+            
+        else:
+            await bot.send_message(user_id, lc["NoTaroGenerations"])
+            #print(costs["RUB"]["three_taro_gen"])
+            
+            
+            await bot.set_state(message.from_user.id, MyStates.choose_currency, message.chat.id)
+            async with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
+                data["product_name"] = "three_taro_gen"
 
-    for i in range(3):
-        await bot.send_photo(user_id,imgs[i], caption = texts[i])
+            await choose_currency(message, bot)
+
+            # invoice_parameters = ProductFabricMethod.getProduct("three_taro_gen", session.getLang(user_id), costs["RUB"]["three_taro_gen"]).getProductParameters()
+            # await bot.send_invoice(user_id, **invoice_parameters)
