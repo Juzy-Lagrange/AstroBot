@@ -6,7 +6,8 @@ from os import getenv
 from dotenv import load_dotenv
 
 load_dotenv()
-PROVIDER_TOKEN_TEST = getenv("PROVIDER_TOKEN_TEST")
+PROVIDER_TOKEN_TEST = getenv("PROVIDER_TOKEN")
+
 
 
 class Product:
@@ -20,7 +21,6 @@ class Product:
     
     def getProductParameters(self):
         parameters =  self.__dict__
-        #print(parameters)
         parameters.pop("_Product__CONST_CONVERT_TO_RUB")
         return parameters
 

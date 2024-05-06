@@ -15,5 +15,5 @@ from os import getenv
 from dotenv import load_dotenv
 
 load_dotenv()
-CRYPRO_PAY_TEST_TOKEN = getenv("CRYPRO_PAY_TEST_TOKEN")
-cryptoPay = AioCryptoPay(token=CRYPRO_PAY_TEST_TOKEN, network=Networks.TEST_NET)
+CRYPRO_PAY_TEST_TOKEN = getenv("CRYPTO_PAY_TOKEN")
+cryptoPay = AioCryptoPay(token=CRYPRO_PAY_TEST_TOKEN, network=Networks.MAIN_NET)

@@ -103,14 +103,14 @@ class AstrologyAPIClient:
             "place": GEOMODULE.address,
             "language": lang,
             "timezone": tzone,
-            "footer_link": "https://t.me/astrologymap",
-            "logo_url": "https://i.giphy.com/GFC1z8M8GGzkuCiCkr.webp" ,
+            "footer_link": "t.me/astrologymap_bot",
+            "logo_url": "" ,
             "company_name": "AstrologyMap",
-            "company_info": "AstrologyMap",
-            "domain_url": "https://t.me/astrologymap",
-            "company_email": "astralmap@yandex.ru",
-            "company_landline": "",
-            "company_mobile": ""
+            "company_info": "Our chatbot offers not just an astrological service, but a comprehensive tool for self-discovery and understanding your own destiny",
+            "domain_url": "astrologymap.online",
+            "company_email": "astrologymap@gmail.com",
+            "company_landline": "+77777777777",
+            "company_mobile": "+77777777777"
         }
         #return {"status": True, "pdf_url": "https://s3.ap-south-1.amazonaws.com/pdfapilambda/f8c7bf80-f762-11ee-ab2f-d33c7f557692.pdf"}
         result = self.getResponse(resource, data).json()

@@ -16,7 +16,7 @@ async def send_start_page(message, bot: AsyncTeleBot):
 
     await bot.delete_state(message.from_user.id, message.chat.id)
     txt = lc["Greetings"]   #.format(examples['ru']) #CHANGE session.getLand(user_id)
-    with open(r"imgs\baba_gadalka.jpg","+rb") as photo:
+    with open("imgs/baba_gadalka.jpg","+rb") as photo:
         await bot.send_photo(message.chat.id, caption = txt, photo = photo, parse_mode='HTML', reply_markup = inline_start_markup)
     await send_main_menu(message, bot)
 

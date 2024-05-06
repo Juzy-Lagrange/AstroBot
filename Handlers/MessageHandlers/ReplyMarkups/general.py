@@ -31,8 +31,13 @@ async def send_plans(message, bot: AsyncTeleBot):
     lc = GetLocalizationIfUserSession(user_id, message)
 
     inline_plans_markup = InlineKeyboardMarkup(getPlansButtons(lc))
-    with open(r'./imgs/plans.jpg', '+rb') as photo:
-        await bot.send_photo(user_id, caption = lc["PPlans"], photo = photo, parse_mode = "HTML", reply_markup = inline_plans_markup)
+    lang = session.getLang(user_id)
+    if (lang == 'ru'):
+        with open(r'./imgs/PlansRu.jpg', '+rb') as photo:
+            await bot.send_photo(user_id, caption = lc["PPlans"], photo = photo, parse_mode = "HTML", reply_markup = inline_plans_markup)
+    else:
+        with open(r'./imgs/Plans.jpg', '+rb') as photo:
+            await bot.send_photo(user_id, caption = lc["PPlans"], photo = photo, parse_mode = "HTML", reply_markup = inline_plans_markup)
 
 
 async def send_plans_callback(query, bot: AsyncTeleBot):
@@ -41,8 +46,13 @@ async def send_plans_callback(query, bot: AsyncTeleBot):
 
     inline_plans_markup = InlineKeyboardMarkup(getPlansButtons(lc))
     
-    with open(r'./imgs/plans.jpg', '+rb') as photo:
-        await bot.send_photo(user_id, caption = lc["PPlans"], photo = photo, parse_mode = "HTML", reply_markup = inline_plans_markup)
+    if (lang == 'ru'):
+        with open(r'./imgs/PlansRu.jpg', '+rb') as photo:
+            await bot.send_photo(user_id, caption = lc["PPlans"], photo = photo, parse_mode = "HTML", reply_markup = inline_plans_markup)
+    else:
+        with open(r'./imgs/Plans.jpg', '+rb') as photo:
+            await bot.send_photo(user_id, caption = lc["PPlans"], photo = photo, parse_mode = "HTML", reply_markup = inline_plans_markup)
+
 
 
 async def send_user_orders(message, bot: AsyncTeleBot):

@@ -161,7 +161,7 @@ costs = {
         "plan_waytostars": 1000,         #1499
         "natal_chart": 399,              #399
         "three_taro_gen": 99,            #99
-        "one_taro_gen": 99,              #33
+        "one_taro_gen": 75,              #33
         "one_month_horoscope": 299,      #299   
         "three_month_horoscope": 799,    #799
         "one_year_horoscope": 1000,      #2490

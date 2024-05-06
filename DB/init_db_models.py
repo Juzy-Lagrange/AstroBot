@@ -5,8 +5,8 @@ from peewee import *
 import datetime
 
 
-database  = MySQLDatabase('astro-bot', user='root', 
-                          password='root', host='localhost')
+database  = MySQLDatabase('astro-bot', user='astro', 
+                          password='astro-password', host='localhost')
 database.connect()
 Models = generate_models(database)
 database.close()
